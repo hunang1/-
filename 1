@@ -1,0 +1,37 @@
+import requests
+
+def translate_text(text, source_lang, target_lang, api_key):
+    url = "https://translation.googleapis.com/language/translate/v2"
+    params = {
+        "q": text,
+        "source": source_lang,
+        "target": target_lang,
+        "key": api_key
+    }
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if "data" in data and "translations" in data["data"]:
+        translations = data["data"]["translations"]
+        if translations:
+            return translations[0]["translatedText"]
+
+    return None
+
+def main():
+    api_key = "YOUR_API_KEY"  # 替换为你的翻译API密钥
+    text = input("Enter the text to translate: ")
+    source_lang = input("Enter the source language code: ")
+    target_lang = input("Enter the target language code: ")
+
+    translation = translate_text(text, source_lang, target_lang, api_key)
+
+    if translation:
+        print("Translation:")
+        print(translation)
+    else:
+        print("Translation failed.")
+
+if __name__ == "__main__":
+    main()
